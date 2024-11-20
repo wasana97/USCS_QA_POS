@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 public class CustomerPage extends BasePage {
 
     //--Visit customer page--
-    @FindBy(xpath = "(//a[text()=' Local 2 '])[2]") // Location modal option
+    @FindBy(xpath = "//div[@id='choose_location_modal']/div/div/div[2]/ul/li[1]/a") // Location modal option
     private WebElement location;
 
     @FindBy(xpath = "/html/body/div[3]/div[1]/ul/li[3]/a") // Customers tab
@@ -30,43 +30,73 @@ public class CustomerPage extends BasePage {
     private WebElement customerInfo;
 
     //--Form Fields--
-    @FindBy(id = "first_name")
+    @FindBy(xpath = "//input[@id='first_name']")
     private WebElement firstName;
 
-    @FindBy(id = "last_name")
+    @FindBy(xpath = "//input[@id='last_name']")
     private WebElement lastName;
 
-    @FindBy(id = "email")
+    @FindBy(xpath = "//input[@id='email']")
     private WebElement email;
 
-    @FindBy(id = "phone_number")
+    @FindBy(xpath = "//input[@id='phone_number']")
     private WebElement phoneNumber;
 
-    @FindBy(id = "company_name")
-    private WebElement companyName;
+    @FindBy(xpath = "//input[@id='address_1']")
+    private WebElement address01;
 
-    @FindBy(id = "account_number")
-    private WebElement accountNumber;
+    @FindBy(xpath = "//input[@id='address_2']")
+    private WebElement address02;
 
-    @FindBy(id = "comments")
+    @FindBy(xpath = "//input[@id='city']")
+    private WebElement city;
+
+    @FindBy(xpath = "//input[@id='state']")
+    private WebElement province;
+
+    @FindBy(xpath = "//input[@id='zip']")
+    private WebElement zip;
+
+    @FindBy(xpath = "//input[@id='country']")
+    private WebElement country;
+
+    @FindBy(xpath = "//textarea[@id='comments']")
     private WebElement comments;
 
+    @FindBy(xpath = "//textarea[@id='internal_notes']")
+    private WebElement internalNotes;
+
+    @FindBy(xpath = "//input[@id='balance']")
+    private WebElement storeAccountBalance;
+
+    @FindBy(xpath = "//input[@id='credit_limit']")
+    private WebElement creditLimit;
+
+    @FindBy(xpath = "//input[@id='amount_to_spend_for_next_point']")
+    private WebElement amountToSpendForNextPoint;
+
+    @FindBy(xpath = "//input[@id='points']")
+    private WebElement points;
+
+    @FindBy(xpath = "//input[@id='company_name']")
+    private WebElement companyName;
+
+    @FindBy(xpath = "//input[@id='account_number']")
+    private WebElement accountNumber;
+
+    @FindBy(xpath = "//textarea[@id='customer_info_popup']")
+    private WebElement messageToShow;
+
+
     //--Dropdowns--
-    @FindBy(id = "customer_type")
-    private WebElement customerTypeDropdown;
-
-    @FindBy(id = "taxable")
-    private WebElement taxableCheckbox;
-
-    //--Additional Fields (e.g., Discount, Pricing Tier)--
-    @FindBy(id = "discount_percent")
-    private WebElement discountPercent;
+    @FindBy(xpath = "//select[@id='section_names']")
+    private WebElement terms;
 
     @FindBy(id = "tier_id")
-    private WebElement pricingTierDropdown;
+    private WebElement tierType;
 
     //--Submit Button--
-    @FindBy(xpath = "/html/body/div[3]/div[2]/div[3]/div/div[2]/form/div/div[2]/div[13]/input")
+    @FindBy(xpath = "(//input[@id='submitf'])[1]")
     private WebElement saveButton;
 
     //--Validation Messages--
@@ -90,7 +120,8 @@ public class CustomerPage extends BasePage {
 
     //--Reusable Method for Dropdown Selection--
     private void selectDropdown(WebElement dropdown, String value) {
-        new Select(dropdown).selectByVisibleText(value);
+        Select select = new Select(dropdown);
+        select.selectByVisibleText(value);
     }
 
     //--Reusable Method for Checkboxes--
@@ -101,8 +132,9 @@ public class CustomerPage extends BasePage {
     }
 
 
-    //To visit customer page
+    // To visit customer page
     public void visitCustomerPage() {
+        ignoreLocation();
         // Click the Customers tab
         click(customerTab);
 
@@ -115,16 +147,34 @@ public class CustomerPage extends BasePage {
 
     //--Fill customer Form--
     //--Method to Fill the Entire Customer Form--
-    public void fillCustomerForm(String firstName, String lastName, String email, String phoneNumber, String comments, String companyName, String accountNumber) {
+    public void fillCustomerForm(String firstName, String lastName, String email, String phoneNumber, String address01, String address02,
+                                 String city, String province, String zip, String country, String comments, String internalNotes,
+                                 String storeAccountBalance, String creditLimit, String amountToSpendForNextPoint,
+                                 String points, String companyName, String accountNumber, String messageToShow, String toShow) {
+
+        // Fill all text fields
         fillField(this.firstName, firstName);
         fillField(this.lastName, lastName);
         fillField(this.email, email);
         fillField(this.phoneNumber, phoneNumber);
+        fillField(this.address01, address01);
+        fillField(this.address02, address02);
+        fillField(this.city, city);
+        fillField(this.province, province);
+        fillField(this.zip, zip);
+        fillField(this.country, country);
+        fillField(this.comments, comments);
+        fillField(this.internalNotes, internalNotes);
+        fillField(this.storeAccountBalance, storeAccountBalance);
+        fillField(this.creditLimit, creditLimit);
+        fillField(this.amountToSpendForNextPoint, amountToSpendForNextPoint);
+        fillField(this.points, points);
         fillField(this.companyName, companyName);
         fillField(this.accountNumber, accountNumber);
-        fillField(this.comments, comments);
+        fillField(this.messageToShow, messageToShow);
 
-        //selectDropdown(this.customerTypeDropdown, customerType);
+        // Handling the "Terms" dropdown
+
     }
 
     //--Submit the Form--
@@ -137,8 +187,11 @@ public class CustomerPage extends BasePage {
         return validationError.getText();
     }
 
-    //Add new Customer
-    public void addNewCustomer(String firstName, String lastName, String email, String phoneNumber, String companyName, String accountNumber, String comments) {
+    // Add new Customer
+    public void addNewCustomer(String firstName, String lastName, String email, String phoneNumber, String address01, String address02,
+                               String city, String province, String zip, String country, String comments, String internalNotes,
+                               String storeAccountBalance, String creditLimit, String amountToSpendForNextPoint,
+                               String points, String companyName, String accountNumber, String messageToShow) {
         // Click the "Add New Customer" button
         click(newCustomer);
 
@@ -146,11 +199,11 @@ public class CustomerPage extends BasePage {
         presenceOfElementLocated(customerInfo);
 
         // Fill out the form
-        fillCustomerForm(firstName, lastName, email, phoneNumber, companyName, accountNumber, comments);
+        fillCustomerForm(firstName, lastName, email, phoneNumber, companyName, address01, address02, city, province, zip, country,
+                comments, internalNotes, storeAccountBalance, creditLimit, amountToSpendForNextPoint, points, companyName,
+                accountNumber, messageToShow);
 
         // Submit the form
         submitForm();
     }
-
-
 }
