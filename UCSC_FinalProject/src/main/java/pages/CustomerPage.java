@@ -1,9 +1,12 @@
 package pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class CustomerPage extends BasePage {
 
@@ -11,7 +14,7 @@ public class CustomerPage extends BasePage {
     @FindBy(xpath = "//div[@id='choose_location_modal']/div/div/div[2]/ul/li[1]/a") // Location modal option
     private WebElement location;
 
-    @FindBy(xpath = "/html/body/div[3]/div[1]/ul/li[3]/a") // Customers tab
+    @FindBy(xpath = "/html/body/div[3]/div[1]/ul/li[3]/a/span[2]") // Customers tab
     private WebElement customerTab;
 
     @FindBy(xpath = "/html/body/div[3]/div[1]/ul/li[3]/ul/li[1]/a") // Customers button in dropdown
@@ -109,7 +112,14 @@ public class CustomerPage extends BasePage {
     }
 
     public void ignoreLocation() {
-        click(location);
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebElement locationModal = wait.until(ExpectedConditions.elementToBeClickable(location));
+            System.out.println("Location modal detected. Clicking...");
+            locationModal.click();
+        } catch (TimeoutException e) {
+            System.out.println("Location popup not detected. Skipping...");
+        }
     }
 
     //--Reusable Method to Fill Fields--
@@ -131,12 +141,24 @@ public class CustomerPage extends BasePage {
         }
     }
 
+    public void testLocation(){
+        ignoreLocation();
+
+    }
+
 
     // To visit customer page
     public void visitCustomerPage() {
-        ignoreLocation();
         // Click the Customers tab
-        click(customerTab);
+        try {
+            WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
+            element.click();
+        } catch (StaleElementReferenceException e) {
+            WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
+            element.click();
+        }
+
+
 
         // Click the Customers button in the dropdown
         click(customerBtn);
@@ -206,4 +228,18 @@ public class CustomerPage extends BasePage {
         // Submit the form
         submitForm();
     }
+
+    //-----------------------Delete customer------------------------------------------------------------------------
+/*
+    @FindBy(xpath = "//table[@id='sortable_table']//tr[1]//a[contains(@href, 'delete')]") // Replace with correct XPath
+    private WebElement deleteCustomerBtn;
+
+    @FindBy(xpath = "//button[@id='confirm-delete']") // Confirm delete button in modal
+    private WebElement confirmDeleteBtn;
+
+    public void deleteCustomer() {
+        click(deleteCustomerBtn);  // Click delete button for the first customer
+        presenceOfElementLocated(confirmDeleteBtn); // Wait for confirmation modal
+        click(confirmDeleteBtn);   // Confirm deletion
+    }*/
 }
