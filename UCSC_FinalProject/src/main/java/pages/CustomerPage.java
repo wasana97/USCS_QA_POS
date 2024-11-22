@@ -114,7 +114,7 @@ public class CustomerPage extends BasePage {
     @FindBy(xpath = "//input[@id='search']")
     private WebElement searchField;
 
-    @FindBy(xpath = "//div[@id='s2id_search_type_id']/a/span[1]")
+    @FindBy(xpath = "//select[@id='search_type_id']")
     private WebElement selectCategoryBox;
 
     @FindBy(xpath = "//form[@id='search_form']/div/ul/li[4]/button/span[2]")
@@ -164,11 +164,13 @@ public class CustomerPage extends BasePage {
     public void visitCustomerPage() {
         // Click the Customers tab
         try {
-            WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
-            element.click();
+            driver.navigate().to("https://demo.phppointofsale.com/index.php/customers");
+            //WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
+            //element.click();
         } catch (StaleElementReferenceException e) {
-            WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
-            element.click();
+            //WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
+            //element.click();
+            driver.navigate().to("https://demo.phppointofsale.com/index.php/customers");
         }
 
 
