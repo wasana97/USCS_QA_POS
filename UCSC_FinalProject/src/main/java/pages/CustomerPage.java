@@ -101,7 +101,7 @@ public class CustomerPage extends BasePage {
     private WebElement tierType;
 
     //--Submit Button--
-    @FindBy(xpath = "(//input[@id='submitf'])[1]")
+    @FindBy(xpath = "/html/body/div[3]/div[2]/div[3]/div/div[2]/form/div/div[2]/div[20]/input")
     private WebElement saveButton;
 
     //--Validation Messages--
@@ -154,7 +154,7 @@ public class CustomerPage extends BasePage {
         }
     }
 
-    public void testLocation(){
+    public void testLocation() {
         ignoreLocation();
 
     }
@@ -165,14 +165,15 @@ public class CustomerPage extends BasePage {
         // Click the Customers tab
         try {
             //driver.navigate().to("https://demo.phppointofsale.com/index.php/customers");
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
             element.click();
         } catch (StaleElementReferenceException e) {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
             element.click();
             //driver.navigate().to("https://demo.phppointofsale.com/index.php/customers");
         }
-
 
 
         // Click the Customers button in the dropdown
@@ -217,6 +218,7 @@ public class CustomerPage extends BasePage {
     //--Submit the Form--
     public void submitForm() {
         saveButton.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
     }
 
     //--Method to Get Validation Errors--
@@ -242,12 +244,18 @@ public class CustomerPage extends BasePage {
 
         // Submit the form
         submitForm();
+        click(customerBtn);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
+        driver.navigate().refresh();
+        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(100));
     }
 
-    public void typeOnSearchField(String value){
-        this.fillField(this.searchField,value);
+    //------------------Search---------------------------------------------------
+    public void typeOnSearchField(String value) {
+        this.fillField(this.searchField, value);
     }
-    public void selectOptionOnCategoryBox(String visibleText){
+
+    public void selectOptionOnCategoryBox(String visibleText) {
         searchType = visibleText;
         new Select(selectCategoryBox).selectByVisibleText(visibleText);
     }
@@ -262,18 +270,69 @@ public class CustomerPage extends BasePage {
 
     }
 
+    //------------------------------------------------Edit-------------------------------------------------------
+    @FindBy(xpath = "//table[@id='sortable_table']/tbody/tr[1]/td[2]/div/a") // Replace with correct XPath
+    private WebElement editBtn;
+
+    @FindBy(xpath = "/html/body/div[3]/div[2]/div[2]/nav/div[2]/a[3]") // Replace with correct XPath
+    private WebElement updateCustomer;
+
+    @FindBy(xpath = "//input[@id='first_name']") // Replace with correct XPath
+    private WebElement firstNameFieldInEditForm;
+
+    @FindBy(xpath = "//input[@id='last_name'']") // Replace with correct XPath
+    private WebElement LastNameFieldInEditForm;
+
+    @FindBy(xpath = "//input[@id='email']") // Replace with correct XPath
+    private WebElement emailFieldInEditForm;
+
+    @FindBy(xpath = "//input[@id='phone_number']") // Replace with correct XPath
+    private WebElement phoneNumberFieldInEditForm;
+
+    @FindBy(xpath = "//input[@id='address_1']") // Replace with correct XPath
+    private WebElement address01FieldInEditForm;
+
+    @FindBy(xpath = "//input[@id='address_2']") // Replace with correct XPath
+    private WebElement address02FieldInEditForm;
+
+
+    @FindBy(xpath = "/html/body/div[3]/div[2]/div[3]/div/div[2]/form/div/div[2]/div[20]/input")
+    private WebElement saveUpdate;
+
+
+    public void EditCustomerForm(String firstname, String lastName, String email, String phoneNumber, String address01, String address02) {
+        fillField(this.emailFieldInEditForm, email);
+
+    }
+
+    public void EditCustomer(String firstname, String lastName, String email, String phoneNumber, String address01, String address02) {
+
+        click(editBtn);
+        presenceOfElementLocated(updateCustomer);
+        EditCustomerForm(firstname, lastName, email, phoneNumber, address01, address02);
+        click(saveUpdate);
+
+    }
+
+
     //-----------------------Delete customer------------------------------------------------------------------------
-/*
-    @FindBy(xpath = "//table[@id='sortable_table']//tr[1]//a[contains(@href, 'delete')]") // Replace with correct XPath
-    private WebElement deleteCustomerBtn;
 
-    @FindBy(xpath = "//button[@id='confirm-delete']") // Confirm delete button in modal
-    private WebElement confirmDeleteBtn;
+    @FindBy(xpath = "//table[@id='sortable_table']/tbody/tr[1]/td[1]") // Replace with correct XPath
+    private WebElement firstRawOfCustomerList;
 
-    public void deleteCustomer() {
-        click(deleteCustomerBtn);  // Click delete button for the first customer
-        presenceOfElementLocated(confirmDeleteBtn); // Wait for confirmation modal
-        click(confirmDeleteBtn);   // Confirm deletion
-    }*/
+    @FindBy(xpath = "//a[@id='delete']/span[2]") // Confirm delete button in modal
+    private WebElement DeleteBtn;
+
+    @FindBy(xpath = "/html/body/div[6]/div/div/div[2]/button[2]") // Confirm delete button in modal
+    private WebElement confirmDelete;
+
+    public void DeleteCustomerRecord(){
+
+        click(firstRawOfCustomerList);
+        click(DeleteBtn);
+        click(confirmDelete);
+    }
+
+
 
 }
