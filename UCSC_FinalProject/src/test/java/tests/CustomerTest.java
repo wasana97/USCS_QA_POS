@@ -8,6 +8,7 @@ import pages.BasePage;
 import pages.CustomerPage;
 import pages.PageFactory;
 
+import static org.testng.Reporter.clear;
 import static pages.PageFactory.customerPage;
 
 public class CustomerTest extends BaseTest {
@@ -20,10 +21,10 @@ public class CustomerTest extends BaseTest {
     @Test(dependsOnMethods  = "testLocationPopUp")
     public void testCustomerPageFeature() {
         customerPage.visitCustomerPage();
-        customerPage.addNewCustomer("karvin",                // First Name
-                "perera",                 // Last Name
-                "karvin.com",    // Email
-                "0112345678",          // Phone Number
+        customerPage.addNewCustomer("lihini",                // First Name
+                "pereraaaa",                 // Last Name
+                "sihini@gmail.com",    // Email
+                "0118596326",          // Phone Number
                 "colombo",         // Address 1
                 "colombo 7",               // Address 2
                 "colombo",            // City
@@ -36,7 +37,7 @@ public class CustomerTest extends BaseTest {
                 "12000.00",               // Credit Limit
                 "52",                // Amount to Spend For Next Point
                 "20",               // Points
-                "KJH Corp",            // Company Name
+                "lihini Corp",            // Company Name
                 "ACC20001",           // Account Number
                 "Test message" // Message To Show
         );
@@ -51,11 +52,11 @@ public class CustomerTest extends BaseTest {
 
     //---------------------------Search Customer-------------------------------------
 
-    @Test(dependsOnMethods = "EditCustomerForm")
+    @Test(dependsOnMethods = "testCustomerPageFeature")
     public void searchName(){
         try {
            customerPage.visitCustomerPage();
-            customerPage.typeOnSearchField("wasana");
+            customerPage.typeOnSearchField("lihini");
             customerPage.selectOptionOnCategoryBox("Name");
            customerPage.clickOnSearchButton();
         }catch (Exception ex){
@@ -68,21 +69,24 @@ public class CustomerTest extends BaseTest {
     @Test(dependsOnMethods = "searchName")
     public void EditCustomerForm(){
         customerPage.visitCustomerPage();
-        customerPage.EditCustomer("hansi",
-                "perera",
-                "hansi@gmail.com",
-                "01123876905",
-                "Kalutara",
-                "Horana"
+        customerPage.EditCustomer("sithuli",
+                "sanara",
+                "sithuli@gmail.com",
+                "0118578925"
                 );
         System.out.println("Customer update successfully!");
     }
 
     //--------------------------------Delete Customer---------------------
 
-    @Test(dependsOnMethods = "searchName")
+
+
+    @Test(dependsOnMethods = "EditCustomerForm")
     public void DeleteCustomer(){
-        customerPage.visitCustomerPage();
+       customerPage.visitCustomerPage();
+        //customerPage.clickOnSearchButton();
+       // clear();
+       // driver.navigate().refresh();
         customerPage.DeleteCustomerRecord();
         System.out.println("Customer Delete successfully!");
     }

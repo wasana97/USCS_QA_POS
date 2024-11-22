@@ -218,7 +218,7 @@ public class CustomerPage extends BasePage {
     //--Submit the Form--
     public void submitForm() {
         saveButton.click();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
+       // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
     //--Method to Get Validation Errors--
@@ -244,10 +244,11 @@ public class CustomerPage extends BasePage {
 
         // Submit the form
         submitForm();
+        click(customerTab);
         click(customerBtn);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
+       // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
         driver.navigate().refresh();
-        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(100));
+       // WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(100));
     }
 
     //------------------Search---------------------------------------------------
@@ -280,8 +281,8 @@ public class CustomerPage extends BasePage {
     @FindBy(xpath = "//input[@id='first_name']") // Replace with correct XPath
     private WebElement firstNameFieldInEditForm;
 
-    @FindBy(xpath = "//input[@id='last_name'']") // Replace with correct XPath
-    private WebElement LastNameFieldInEditForm;
+    @FindBy(xpath = "//input[@id='last_name']") // Replace with correct XPath
+    private WebElement lastNameFieldInEditForm;
 
     @FindBy(xpath = "//input[@id='email']") // Replace with correct XPath
     private WebElement emailFieldInEditForm;
@@ -300,16 +301,21 @@ public class CustomerPage extends BasePage {
     private WebElement saveUpdate;
 
 
-    public void EditCustomerForm(String firstname, String lastName, String email, String phoneNumber, String address01, String address02) {
+    public void EditCustomerForm(String firstname, String lastName, String email, String phoneNumber) {
+        fillField(this.firstNameFieldInEditForm,firstname);
+        fillField(this.lastNameFieldInEditForm,lastName);
         fillField(this.emailFieldInEditForm, email);
+        fillField(this.phoneNumberFieldInEditForm,phoneNumber);
+       // fillField(this.address01FieldInEditForm,address01);
+      //  fillField(this.address02FieldInEditForm,address02);
 
     }
 
-    public void EditCustomer(String firstname, String lastName, String email, String phoneNumber, String address01, String address02) {
+    public void EditCustomer(String firstname, String lastName, String email, String phoneNumber) {
 
         click(editBtn);
         presenceOfElementLocated(updateCustomer);
-        EditCustomerForm(firstname, lastName, email, phoneNumber, address01, address02);
+        EditCustomerForm(firstname, lastName, email, phoneNumber);
         click(saveUpdate);
 
     }
