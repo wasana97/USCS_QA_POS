@@ -260,5 +260,18 @@ public class CustomerPage extends BasePage {
 
     }
 
+    //-----------------------Delete customer------------------------------------------------------------------------
+/*
+    @FindBy(xpath = "//table[@id='sortable_table']//tr[1]//a[contains(@href, 'delete')]") // Replace with correct XPath
+    private WebElement deleteCustomerBtn;
+
+    @FindBy(xpath = "//button[@id='confirm-delete']") // Confirm delete button in modal
+    private WebElement confirmDeleteBtn;
+
+    public void deleteCustomer() {
+        click(deleteCustomerBtn);  // Click delete button for the first customer
+        presenceOfElementLocated(confirmDeleteBtn); // Wait for confirmation modal
+        click(confirmDeleteBtn);   // Confirm deletion
+    }*/
 
 }
