@@ -164,13 +164,13 @@ public class CustomerPage extends BasePage {
     public void visitCustomerPage() {
         // Click the Customers tab
         try {
-            driver.navigate().to("https://demo.phppointofsale.com/index.php/customers");
-            //WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
-            //element.click();
+            //driver.navigate().to("https://demo.phppointofsale.com/index.php/customers");
+            WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
+            element.click();
         } catch (StaleElementReferenceException e) {
-            //WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
-            //element.click();
-            driver.navigate().to("https://demo.phppointofsale.com/index.php/customers");
+            WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
+            element.click();
+            //driver.navigate().to("https://demo.phppointofsale.com/index.php/customers");
         }
 
 

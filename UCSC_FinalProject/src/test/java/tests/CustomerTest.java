@@ -49,12 +49,12 @@ public class CustomerTest extends BaseTest {
         System.out.println("New customer added successfully!");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCustomerPageFeature")
     public void searchName(){
         try {
-            customerPage.visitCustomerPage();
+           customerPage.visitCustomerPage();
             customerPage.typeOnSearchField("John");
-           customerPage.selectOptionOnCategoryBox("Name");
+            customerPage.selectOptionOnCategoryBox("Name");
            customerPage.clickOnSearchButton();
         }catch (Exception ex){
             System.out.println(ex.getMessage());
