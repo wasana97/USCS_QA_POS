@@ -17,6 +17,7 @@ public abstract class BasePage {
     }
 
 
+
     public void click(WebElement locator) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));

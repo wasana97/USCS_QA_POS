@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import pages.BasePage;
+import pages.CustomerPage;
 import pages.PageFactory;
 
 import static pages.PageFactory.customerPage;
@@ -45,6 +47,20 @@ public class CustomerTest extends BaseTest {
 
         // Print a success message
         System.out.println("New customer added successfully!");
+    }
+
+    @Test(dependsOnMethods = "testCustomerPageFeature")
+    public void searchName(){
+        try {
+           customerPage.visitCustomerPage();
+            customerPage.typeOnSearchField("John");
+            customerPage.selectOptionOnCategoryBox("Name");
+           customerPage.clickOnSearchButton();
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+
+
+        }
     }
 
    /* @Test(dependsOnMethods  = "testLocationPopUp")

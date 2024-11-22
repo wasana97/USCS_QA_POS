@@ -10,6 +10,8 @@ import java.time.Duration;
 
 public class CustomerPage extends BasePage {
 
+    private String searchType;
+
     //--Visit customer page--
     @FindBy(xpath = "//div[@id='choose_location_modal']/div/div/div[2]/ul/li[1]/a") // Location modal option
     private WebElement location;
@@ -106,6 +108,17 @@ public class CustomerPage extends BasePage {
     @FindBy(xpath = "//span[@class='text-danger']")
     private WebElement validationError;
 
+    @FindBy(xpath = "//a[text()='Dashboard']")
+    private WebElement dashboardLabel;
+
+    @FindBy(xpath = "//input[@id='search']")
+    private WebElement searchField;
+
+    @FindBy(xpath = "//select[@id='search_type_id']")
+    private WebElement selectCategoryBox;
+
+    @FindBy(xpath = "//form[@id='search_form']/div/ul/li[4]/button/span[2]")
+    private WebElement searchButton;
 
     public CustomerPage(WebDriver driver) {
         super(driver);
@@ -151,11 +164,13 @@ public class CustomerPage extends BasePage {
     public void visitCustomerPage() {
         // Click the Customers tab
         try {
+            //driver.navigate().to("https://demo.phppointofsale.com/index.php/customers");
             WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
             element.click();
         } catch (StaleElementReferenceException e) {
             WebElement element = driver.findElement(By.xpath("//html/body/div[3]/div[1]/ul/li[3]/a/span[2]"));
             element.click();
+            //driver.navigate().to("https://demo.phppointofsale.com/index.php/customers");
         }
 
 
@@ -229,6 +244,24 @@ public class CustomerPage extends BasePage {
         submitForm();
     }
 
+    public void typeOnSearchField(String value){
+        this.fillField(this.searchField,value);
+    }
+    public void selectOptionOnCategoryBox(String visibleText){
+        searchType = visibleText;
+        new Select(selectCategoryBox).selectByVisibleText(visibleText);
+    }
+
+    public <T> T clickOnSearchButton() {
+        searchButton.click();
+        if (searchType.equals("Name")) {
+            return PageFactory.initElements(driver, (Class<? extends T>)
+                    CustomerPage.class);
+        }
+        return null;
+
+    }
+
     //-----------------------Delete customer------------------------------------------------------------------------
 /*
     @FindBy(xpath = "//table[@id='sortable_table']//tr[1]//a[contains(@href, 'delete')]") // Replace with correct XPath
@@ -242,4 +275,5 @@ public class CustomerPage extends BasePage {
         presenceOfElementLocated(confirmDeleteBtn); // Wait for confirmation modal
         click(confirmDeleteBtn);   // Confirm deletion
     }*/
+
 }
