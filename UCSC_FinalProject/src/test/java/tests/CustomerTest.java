@@ -20,10 +20,10 @@ public class CustomerTest extends BaseTest {
     @Test(dependsOnMethods  = "testLocationPopUp")
     public void testCustomerPageFeature() {
         customerPage.visitCustomerPage();
-        customerPage.addNewCustomer("kevin",                // First Name
-                "fernando",                 // Last Name
-                "kevinfernando.com",    // Email
-                "0112548789",          // Phone Number
+        customerPage.addNewCustomer("karvin",                // First Name
+                "perera",                 // Last Name
+                "karvin.com",    // Email
+                "0112345678",          // Phone Number
                 "colombo",         // Address 1
                 "colombo 7",               // Address 2
                 "colombo",            // City
@@ -36,8 +36,8 @@ public class CustomerTest extends BaseTest {
                 "12000.00",               // Credit Limit
                 "52",                // Amount to Spend For Next Point
                 "20",               // Points
-                "XYZ Corp",            // Company Name
-                "ACC20021",           // Account Number
+                "KJH Corp",            // Company Name
+                "ACC20001",           // Account Number
                 "Test message" // Message To Show
         );
 
@@ -49,11 +49,13 @@ public class CustomerTest extends BaseTest {
         System.out.println("New customer added successfully!");
     }
 
-    @Test(dependsOnMethods = "testCustomerPageFeature")
+    //---------------------------Search Customer-------------------------------------
+
+    @Test(dependsOnMethods = "EditCustomerForm")
     public void searchName(){
         try {
            customerPage.visitCustomerPage();
-            customerPage.typeOnSearchField("John");
+            customerPage.typeOnSearchField("wasana");
             customerPage.selectOptionOnCategoryBox("Name");
            customerPage.clickOnSearchButton();
         }catch (Exception ex){
@@ -61,6 +63,28 @@ public class CustomerTest extends BaseTest {
 
 
         }
+    }
+//--------------------------------Edit Customer--------------------------------------------
+    @Test(dependsOnMethods = "searchName")
+    public void EditCustomerForm(){
+        customerPage.visitCustomerPage();
+        customerPage.EditCustomer("hansi",
+                "perera",
+                "hansi@gmail.com",
+                "01123876905",
+                "Kalutara",
+                "Horana"
+                );
+        System.out.println("Customer update successfully!");
+    }
+
+    //--------------------------------Delete Customer---------------------
+
+    @Test(dependsOnMethods = "searchName")
+    public void DeleteCustomer(){
+        customerPage.visitCustomerPage();
+        customerPage.DeleteCustomerRecord();
+        System.out.println("Customer Delete successfully!");
     }
 
    /* @Test(dependsOnMethods  = "testLocationPopUp")
